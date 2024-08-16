@@ -13,10 +13,16 @@
 // ■ インクルード
 // *****************************************************************************
 #include "system.h"
+#include "Infrared.h"
 
 // *****************************************************************************
 // ■ グローバル変数
 // *****************************************************************************
+hw_timer_t *g_timer = NULL;
+unsigned long g_time_100us = 0;
+unsigned long g_time_1s = 0;
+
+InfraredController infraredController(PIN_15);
 
 // *****************************************************************************
 // ■ 関数
@@ -42,7 +48,9 @@ void setup() {
   // タイマーの割り込みを登録
   timerAttachInterrupt(g_timer, &OnTimerCallback);
   // 1秒(1000000us)ごとにタイマーを発生させる
-  timerAlarm(g_timer, TIMER_ON_CALL_INTERVAL_VALUE, true, 2);
+  timerAlarm(g_timer, TIMER_ON_CALL_INTERVAL_VALUE, true, TIMER_CH);
+
+  infraredController.Initialize();
 
 }
 
@@ -62,10 +70,10 @@ void loop() {
     light = ~light;
     digitalWrite(PIN_5, light);
 
-    Serial.print("Power on time = ");
-    Serial.println(g_time_1s);
+    // Serial.print("Power on time = ");
+    // Serial.println(g_time_1s);
   }
-
+  infraredController.ReceiveProcess();
 }
 
 // *****************************************************************************

@@ -28,6 +28,9 @@
 #define OFF                                 (0)
 #define ON                                  (1)
 
+// デバッグ
+#define DEBUG                               (ON)
+
 // GPIO関連
 #define PIN_15                              (15)
 #define PIN_5                               (5)
@@ -36,13 +39,14 @@
 #define SERIAL_CLOCK                        (115200)
 
 // taimer関連
-#define TIMER_CH                            (0)
+#define TIMER_CH                            (1)
 #define TIMER_HZ                            (10000000)                          // 10MHz = 100ns
 #define TIMER_ON_CALL_INTERVAL_US           (100)                               // [us]
 #define TIMER_ON_CALL_INTERVAL_VALUE        (TIMER_ON_CALL_INTERVAL_US * 10)    // [us]→[100ns]
 
 // 赤外線受信機関連
 #define IR_RECEIVE_PIN PIN_15
+#define INFRARED_TIMER_CH                    (0)
 
 // app関連
 #define DELAY_TIME                          (500)
@@ -51,8 +55,6 @@
 // *****************************************************************************
 // ■ グローバル変数
 // *****************************************************************************
-hw_timer_t *g_timer = NULL;
-unsigned long g_time_100us = 0;
-unsigned long g_time_1s = 0;
+
 
 #endif // SYSTEM_H
