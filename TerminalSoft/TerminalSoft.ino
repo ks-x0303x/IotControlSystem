@@ -76,18 +76,6 @@ void loop() {
     // Serial.println(App.Time.Second);
   }
   panelController.MainProcess();
-
-  // buttonState = digitalRead(PIN_14);
-  // if (buttonState != preButtonState)
-  // {
-  //   if(buttonState)
-  //     Serial.println("button on");
-  //   else
-  //     Serial.println("button off");
-  // }
-  // preButtonState = buttonState;
-
-
   infraredController.ReceiveProcess();
 }
 
