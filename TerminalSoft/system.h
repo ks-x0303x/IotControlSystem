@@ -24,16 +24,21 @@
 // *****************************************************************************
 // ■ defines
 // *****************************************************************************
+
+// 独自定義
+#define Public extern
+
 // 汎用
 #define OFF                                 (0)
 #define ON                                  (1)
 
 // デバッグ
-#define DEBUG                               (ON)
+#define DEBUG                               (OFF)
 
 // GPIO関連
-#define PIN_15                              (15)
 #define PIN_5                               (5)
+#define PIN_14                              (14)
+#define PIN_15                              (15)
 
 // シリアル関連
 #define SERIAL_CLOCK                        (115200)
@@ -51,10 +56,29 @@
 // app関連
 #define DELAY_TIME                          (500)
 #define TIME_1S_100US                       (10000)
+#define TIME_1MS_100US                      (10)
+
+// *****************************************************************************
+// ■ 構造体
+// *****************************************************************************
+
+typedef struct on_time
+{
+    unsigned long Second;
+    unsigned long MilliSecond;
+}on_time;
+
+
+typedef struct application
+{
+    on_time Time;
+}application;
+
 
 // *****************************************************************************
 // ■ グローバル変数
 // *****************************************************************************
 
+Public application App;
 
 #endif // SYSTEM_H

@@ -14,15 +14,17 @@
 // *****************************************************************************
 #include "system.h"
 #include "Infrared.h"
+#include "Panel.h"
 
 // *****************************************************************************
 // ■ グローバル変数
 // *****************************************************************************
 hw_timer_t *g_timer = NULL;
 unsigned long g_time_100us = 0;
-unsigned long g_time_1s = 0;
 
+application App;
 InfraredController infraredController(PIN_15);
+PanelController panelController;
 
 // *****************************************************************************
 // ■ 関数
@@ -51,7 +53,7 @@ void setup() {
   timerAlarm(g_timer, TIMER_ON_CALL_INTERVAL_VALUE, true, TIMER_CH);
 
   infraredController.Initialize();
-
+  panelController.Initialize();
 }
 
 //-----------------------------------------
@@ -62,17 +64,30 @@ void setup() {
 //-----------------------------------------
 void loop() {
   static int light = OFF;
+  static int buttonState = OFF;
+  static int preButtonState = OFF;
 
-  if(g_time_100us > TIME_1S_100US)
+  if(g_time_100us >= TIME_1S_100US)
   {
-    g_time_100us = 0;
-    g_time_1s++;
+    g_time_100us -= TIME_1S_100US;
     light = ~light;
     digitalWrite(PIN_5, light);
-
     // Serial.print("Power on time = ");
-    // Serial.println(g_time_1s);
+    // Serial.println(App.Time.Second);
   }
+  panelController.MainProcess();
+
+  // buttonState = digitalRead(PIN_14);
+  // if (buttonState != preButtonState)
+  // {
+  //   if(buttonState)
+  //     Serial.println("button on");
+  //   else
+  //     Serial.println("button off");
+  // }
+  // preButtonState = buttonState;
+
+
   infraredController.ReceiveProcess();
 }
 
@@ -84,9 +99,15 @@ void loop() {
 // 関数名　： OnTimerCallback
 // 引数　　： -
 // 戻値　　： -
-// 備考　　：
+// 備考　　： 100us周期
 //-----------------------------------------
 IRAM_ATTR void OnTimerCallback()
 {
   g_time_100us++;
+
+  if((g_time_100us % TIME_1MS_100US) == 0)
+    App.Time.MilliSecond++;
+
+  if((g_time_100us % TIME_1S_100US) == 0)
+    App.Time.Second++;
 }

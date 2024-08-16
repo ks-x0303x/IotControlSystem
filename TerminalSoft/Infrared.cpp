@@ -61,7 +61,9 @@ InfraredController::InfraredController(int pin)
 //-----------------------------------------
 void InfraredController::Initialize()
 {
+#if DEBUG
     memset(debug_time, 0, sizeof(debug_time));
+#endif
     this->SignalTime = 0;
     this->signalTimeOut = TIME_OUT_MS * (1000 / TIMER_INTERVAL_US);
     this->Signal = OFF;
